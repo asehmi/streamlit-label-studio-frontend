@@ -26,16 +26,17 @@ and build the Streamlit component.
 ![Demo](./images/streamlit-label-studio-frontend.gif)
 
 ## Installation
-```
+
+```bash
+$ cd streamlit-label-studio-frontend
 $ pip install -r requirements.txt
-$ cd streamlit_labelstudio_frontend
 ```
 
 ## Usage
 Run the included app for a quick example. 
 
-```
-streamlit run app.py
+```bash
+$ streamlit run app.py
 ```
 
 More configurations can be found in the official [Label Studio examples](https://github.com/heartexlabs/label-studio-frontend/tree/master/examples)

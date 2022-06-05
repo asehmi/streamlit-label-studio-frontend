@@ -21,6 +21,10 @@ This Streamlit application leverages Streamlit Components extensibilty with the 
 as a template it was straight-forward to take the code snippet in Label Studio's [Frontend integration guide](https://labelstud.io/guide/frontend.html#Frontend-integration-guide)
 and build the Streamlit component.
 
+## Demo
+
+![Demo](./images/streamlit-label-studio-frontend.gif)
+
 ## Installation
 ```
 $ pip install -r requirements.txt

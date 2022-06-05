@@ -73,37 +73,40 @@ def sync_state():
 # -----------------------------------------------------------------------------
 def run_component(props):
     value = st_label_studio(key='my_labelstudio', **props)
-    print(value)
-    return value
+    if isinstance(value, list) or isinstance(value, dict):
+      print(value)
+      return value
+    else:
+      return None
 
 def handle_event(value):
+    if value == None:
+      return
+
     st.subheader('Annotations')
     st.json(value, expanded=False)
 
-    if isinstance(value, list) or ((value is not None) and (value.get('ERROR', None) is not None)):
-        results = []
-        for v in value:
-            results.append({'id':v['id'], 'x':v['value']['x'], 'y':v['value']['y'], 'width':v['value']['width'], 'height':v['value']['height'], 'label':v['value']['rectanglelabels'][0]})
+    results = []
+    for v in value:
+        results.append({'id':v['id'], 'x':v['value']['x'], 'y':v['value']['y'], 'width':v['value']['width'], 'height':v['value']['height'], 'label':v['value']['rectanglelabels'][0]})
+    st.dataframe(results)
 
-        st.dataframe(results)
+    # print('Annotations', [v['value'] for v in value])
 
-        print('Annotations', [v['value'] for v in value])
-
-        state.task = {
-            'annotations': [{
-                'id': 1,
-                'result': value 
-            }],
-            'predictions': [],
+    state.task = {
+        'annotations': [{
             'id': 1,
-            'data': {
-                'image': image_url
-            }
+            'result': value 
+        }],
+        'predictions': [],
+        'id': 1,
+        'data': {
+            'image': image_url
         }
+    }
 
-        sync_state()
+    sync_state()
 
-st.title('Label Studio Demo')
 props = {
     'config': state.config,
     'interfaces': state.interfaces,
@@ -111,4 +114,9 @@ props = {
     'task': state.task,
     'height': 1200,
 }
-handle_event(run_component(props))   
+
+c1, c2, c3 = st.columns([1,3,1])
+with c2:
+  st.subheader('Label Studio Demo')
+  st.caption('A Streamlit component integrating Label Studio Frontend in Streamlit applications')
+  handle_event(run_component(props))

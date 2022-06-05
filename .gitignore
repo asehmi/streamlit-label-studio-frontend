@@ -1,0 +1,3 @@
+venv
+streamlit_labelstudio/frontend/node_modules/
+pyc

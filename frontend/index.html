@@ -1,0 +1,165 @@
+<style>
+    body {
+        background-color: lightblue;
+        border-color: rgb(246, 51, 102);
+        border-width: medium;
+        font-family: sans-serif;
+        font-size: 16px;
+    }
+    h1 {
+        font-family: sans-serif;
+        font-size: 24px;
+        font-weight: normal;
+        color: #262730;
+    }
+    #message_div {
+        font-family: sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #262730;
+    }
+</style>
+  
+<html>
+<head>
+    <!-- Include Label Studio stylesheet -->
+    <link href="https://unpkg.com/label-studio/build/static/css/main.css" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/label-studio@1.0.1/build/static/css/main.css" rel="stylesheet"> -->
+</head>
+<body>
+    <!-- Set up your HTML here -->
+
+    <!-- Create the Label Studio container -->
+    <div id="label-studio"></div>
+
+</body>
+</html>
+
+<!-- Include the Label Studio library -->
+<script src="https://unpkg.com/label-studio/build/static/js/main.js"></script>
+<!-- <script src="https://unpkg.com/label-studio@1.0.1/build/static/js/main.js"></script> -->
+
+<script>
+    // ----------------------------------------------------
+    // Use these functions as is to perform required Streamlit 
+    // component lifecycle actions:
+    //
+    // 1. Signal Streamlit client that component is ready
+    // 2. Signal Streamlit client to set visible height of the component
+    //    (this is optional, in case Streamlit doesn't correctly auto-set it)
+    // 3. Pass values from component to Streamlit client
+    //
+
+    // Helper function to send type and data messages to Streamlit client
+
+    const SET_COMPONENT_VALUE = "streamlit:setComponentValue"
+    const RENDER = "streamlit:render"
+    const COMPONENT_READY = "streamlit:componentReady"
+    const SET_FRAME_HEIGHT = "streamlit:setFrameHeight"
+
+    function _sendMessage(type, data) {
+      // copy data into object
+      var outData = Object.assign({
+        isStreamlitMessage: true,
+        type: type,
+      }, data)
+
+      if (type == SET_COMPONENT_VALUE) {
+        console.log("_sendMessage data: " + JSON.stringify(data))
+        console.log("_sendMessage outData: " + JSON.stringify(outData))
+      }
+      
+      window.parent.postMessage(outData, "*")
+    }
+
+    function initialize(pipeline) {
+
+      // Hook Streamlit's message events into a simple dispatcher of pipeline handlers
+      window.addEventListener("message", (event) => {
+        if (event.data.type == RENDER) {
+          // The event.data.args dict holds any JSON-serializable value
+          // sent from the Streamlit client. It is already deserialized.
+          pipeline.forEach(handler => {
+            handler(event.data.args)
+          })
+        }
+      })
+
+      _sendMessage(COMPONENT_READY, {apiVersion: 1});
+
+      // Component should be mounted by Streamlit in an iframe, so try to autoset the iframe height.
+      window.addEventListener("load", () => {
+        window.setTimeout(function() {
+          setFrameHeight(document.documentElement.clientHeight)
+        }, 0)
+      })
+
+      // Optionally, if auto-height computation fails, you can manually set it
+      // (uncomment below)
+      setFrameHeight(1200)
+    }
+
+    function setFrameHeight(height) {
+      _sendMessage(SET_FRAME_HEIGHT, {height: height})
+    }
+
+    // The `data` argument can be any JSON-serializable value.
+    function notifyHost(data) {
+      _sendMessage(SET_COMPONENT_VALUE, data)
+    }
+
+    // ----------------------------------------------------
+    // Here's the custom functionality of the component
+    // implemented via a pipeline of inbound property handlers
+
+    // Render LabelStudio with values sent from Streamlit!
+    function renderLabelStudio_Handler(props) {
+        var labelStudio = new LabelStudio('label-studio', {
+            config: props.config,
+            interfaces: props.interfaces,
+            user: props.user,
+            task: props.task,
+
+            onLabelStudioLoad: function(LS) {
+                var c = LS.annotationStore.addAnnotation({
+                    userGenerate: true
+                });
+                LS.annotationStore.selectAnnotation(c.id);
+            }, 
+
+            onSubmitAnnotation: function(LS, annotation) {
+                // retrive an annotation 
+                const data = annotation.serializeAnnotation()
+                console.log(data)
+                notifyHost({
+                  value: data,
+                  dataType: "json",
+                })
+            },
+
+            onUpdateAnnotation: function(LS, annotation) {
+                // retrive an annotation 
+                const data = annotation.serializeAnnotation()
+                console.log(data)
+                notifyHost({
+                  value: data,
+                  dataType: "json",
+                })
+            }
+
+        });
+    }
+
+    // Simply log received data dictionary
+    function log_Handler(props) {
+      console.log("Received from Streamlit: " + JSON.stringify(props))
+    }
+
+    let pipeline = [renderLabelStudio_Handler, log_Handler]
+
+    // ----------------------------------------------------
+    // Finally, initialize component passing in pipeline
+
+    initialize(pipeline)
+
+</script>

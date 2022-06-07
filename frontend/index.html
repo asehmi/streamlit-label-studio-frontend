@@ -94,7 +94,7 @@
 
       // Optionally, if auto-height computation fails, you can manually set it
       // (uncomment below)
-      setFrameHeight(1200)
+      // setFrameHeight(1200)
     }
 
     function setFrameHeight(height) {
@@ -126,11 +126,16 @@
             }, 
 
             onSubmitAnnotation: function(LS, annotation) {
+              // retrive an annotation 
+              const annotation_json = annotation.toJSON()
+              const id = annotation.id
+              const createdBy = annotation.createdBy
+              const createdDate = annotation.createdDate
               const data = annotation.serializeAnnotation()
               if (data) {
-                console.log(data)
+                console.log(`id: ${id}, data: ${data}`)
                 notifyHost({
-                  value: data,
+                  value: {annotation_json: annotation_json, id: id, createdBy: createdBy, createdDate: createdDate, data: data},
                   dataType: "json",
                 })
               }
@@ -138,11 +143,15 @@
 
             onUpdateAnnotation: function(LS, annotation) {
               // retrive an annotation 
+              const annotation_json = annotation.toJSON()
+              const id = annotation.id
+              const createdBy = annotation.createdBy
+              const createdDate = annotation.createdDate
               const data = annotation.serializeAnnotation()
               if (data) {
-                console.log(data)
+                console.log(`id: ${id}, data: ${data}`)
                 notifyHost({
-                  value: data,
+                  value: {annotation_json: annotation_json, id: id, createdBy: createdBy, createdDate: createdDate, data: data},
                   dataType: "json",
                 })
               }
@@ -156,7 +165,11 @@
       console.log("Received from Streamlit: " + JSON.stringify(props))
     }
 
-    let pipeline = [renderLabelStudio_Handler, log_Handler]
+    function setFrameHeight_Handler(props) {
+      setFrameHeight(props.height)
+    }
+
+    let pipeline = [log_Handler, setFrameHeight_Handler, renderLabelStudio_Handler]
 
     // ----------------------------------------------------
     // Finally, initialize component passing in pipeline

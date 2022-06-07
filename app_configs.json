@@ -1,0 +1,117 @@
+{ 
+    "user" : {
+        "pk": 1,
+        "firstName": "Arvindra",
+        "lastName": "Sehmi"
+    },
+
+    "interfaces": [
+        "panel",
+        "update",
+        "submit",
+        "skip",
+        "controls",
+        "infobar",
+        "topbar",
+        "instruction",
+        "side-column",
+        "annotations:history",
+        "annotations:tabs",
+        "annotations:menu",
+        "annotations:current",
+        "annotations:add-new",
+        "annotations:delete",
+        "annotations:view-all",
+        "predictions:tabs",
+        "predictions:menu",
+        "auto-annotation",
+        "edit-history"
+    ],
+    
+    "task_configs": [
+        {
+            "name": "My Bounding Box Single",
+            "description": "My Bounding Box Single Image Annotation",
+            "annotation_type": "image",
+            "config": { 
+                "file": "./label_studio_configs/xml/bounding_box_config.xml" 
+            },
+            "task": {
+                "object": {
+                    "annotations": [],
+                    "predictions": [],
+                    "id": 1,
+                    "data": {
+                        "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg"
+                    }
+                }
+            }
+        },
+        {
+            "name": "My Bounding Box Multi",
+            "description": "My Bounding Box Multiple Images Annotation",
+            "annotation_type": "image",
+            "config": { 
+                "file": "./label_studio_configs/xml/example_bounding_box_config.xml" 
+            },
+            "task": {
+                "file": "./label_studio_configs/json/example_tasks.json" 
+            }
+        },
+        {
+            "name": "Bounding Box Example",
+            "description": "Bounding Box Image Annotation Example",
+            "annotation_type": "image",
+            "config": {
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/tasks.json" 
+            }
+        },
+        {
+            "name": "Ellipse Example",
+            "description": "Ellipse Image Annotation Example",
+            "annotation_type": "image",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_ellipses/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_ellipses/tasks.json" 
+            }
+        },
+        {
+            "name": "Key Points Example",
+            "description": "Key Points Image Annotation Example",
+            "annotation_type": "image",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_keypoints/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_keypoints/tasks.json" 
+            }
+        },
+        {
+            "name": "Multi Label Example",
+            "description": "Multi Label Image Annotation Example",
+            "annotation_type": "image",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_multilabel/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_multilabel/tasks.json" 
+            }
+        },
+        {
+            "name": "Image Tools Example",
+            "description": "Image Tools Available Example",
+            "annotation_type": "image",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_tools/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_tools/tasks.json" 
+            }
+        }
+    ]
+}

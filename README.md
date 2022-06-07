@@ -45,7 +45,7 @@ This app is easily customised through externalized configuration.
 
 ## Configuration
 
-Configuration for labeling tasks in made in [`app_config.json`](https://github.com/asehmi/streamlit-label-studio-frontend/blob/master/app_configs.json). There are three sections required for annotation: `"user"`, `"interfaces"` and `"task_configs"`.
+Configuration for labeling tasks in made in [`app_configs.json`](https://github.com/asehmi/streamlit-label-studio-frontend/blob/master/app_configs.json). There are three sections required for annotation: `"user"`, `"interfaces"` and `"task_configs"`.
 
 In `"task_configs"` you define `"task"` objects explicitly using the task `"object"` key, or via a local file using the task `"file"` key, or from an external site using the task `"url"` key. Similarly, you can define Label Studio annotation UI elements using `"config"` objects.
 

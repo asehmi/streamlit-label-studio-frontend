@@ -43,13 +43,211 @@ The Streamlit user interface is used to load annotation task configurations whic
 
 This app is easily customised through externalized configuration.  
 
-# Configuration
+## Configuration
 
-Configuration for labeling tasks in made in [`app_config.json`](./app_config.json). There are three sections required for annotation: `"user"`, `"interfaces"` and `"task_configs"`.
+Configuration for labeling tasks in made in [`app_config.json`](https://github.com/asehmi/streamlit-label-studio-frontend/blob/master/app_configs.json). There are three sections required for annotation: `"user"`, `"interfaces"` and `"task_configs"`.
 
-In `"task_configs"` you define `task` objects explicitly using the task `"object"` key, or via a local file using the task `"file"` key, or from an external site using the task `"url"` key. Similarly, you can define Label Studio annotation UI elements using `"config"` objects. 
+In `"task_configs"` you define `"task"` objects explicitly using the task `"object"` key, or via a local file using the task `"file"` key, or from an external site using the task `"url"` key. Similarly, you can define Label Studio annotation UI elements using `"config"` objects.
+
+Below are some examples:
+
+---
+
+**./app_config.json**
+
+```json
+{ 
+    "user" : {
+        "pk": 1,
+        "firstName": "Arvindra",
+        "lastName": "Sehmi"
+    },
+
+    "interfaces": [
+        "panel",
+        "update",
+        "submit",
+        "skip",
+        "controls",
+        "infobar",
+        "topbar",
+        "instruction",
+        "side-column",
+        "annotations:history",
+        "annotations:tabs",
+        "annotations:menu",
+        "annotations:current",
+        "annotations:add-new",
+        "annotations:delete",
+        "annotations:view-all",
+        "predictions:tabs",
+        "predictions:menu",
+        "auto-annotation",
+        "edit-history"
+    ],
+    
+    "task_configs": [
+        {
+            "name": "My Bounding Box Single",
+            "description": "My Bounding Box Single Image Annotation",
+            "annotation_type": "image",
+            "config": { 
+                "file": "./label_studio_configs/xml/bounding_box_config.xml" 
+            },
+            "task": {
+                "object": {
+                    "annotations": [],
+                    "predictions": [],
+                    "id": 1,
+                    "data": {
+                        "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg"
+                    }
+                }
+            }
+        },
+        {
+            "name": "My Bounding Box Multi",
+            "description": "My Bounding Box Multiple Images Annotation",
+            "annotation_type": "image",
+            "config": { 
+                "file": "./label_studio_configs/xml/example_bounding_box_config.xml" 
+            },
+            "task": {
+                "file": "./label_studio_configs/json/example_tasks.json" 
+            }
+        },
+        {
+            "name": "Bounding Box Example",
+            "description": "Bounding Box Image Annotation Example",
+            "annotation_type": "image",
+            "config": {
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/tasks.json" 
+            }
+        }
+    ]
+}
+```
+
+---
+
+**./label_studio_configs/xml/bounding_box_config.xml**
+
+```xml
+<View>
+    <View style="padding: 25px; box-shadow: 2px 2px 8px #AAA;">
+        <Image name="img" value="$image" width="100%" brightnessControl="true" contrastControl="true" zoomControl="true" rotateControl="true">
+        </Image>
+</View>
+    <RectangleLabels name="tag" toName="img">
+        <Label value="Galaxy"></Label>
+        <Label value="Star"></Label>
+        <Label value="Comet"></Label>
+        <Label value="Moon"></Label>
+        <Label value="Sky"></Label>
+        <Label value="Tree"></Label>
+        <Label value="Road"></Label>
+        <Label value="Fence"></Label>
+    </RectangleLabels>
+</View>
+```
+
+---
+
+**./label_studio_configs/json/example_tasks.json**
+
+```json
+[
+    {
+        "annotations": [],
+        "predictions": [
+            {
+                "model_version": "model 1",
+                "created_ago": "3 hours",
+                "result": [
+                    {
+                        "from_name": "tag",
+                        "id": "t5sp3TyXPo",
+                        "source": "$image",
+                        "to_name": "img",
+                        "type": "rectanglelabels",
+                        "value": {
+                            "height": 11.612284069097889,
+                            "rectanglelabels": [
+                                "Moonwalker"
+                            ],
+                            "rotation": 0,
+                            "width": 39.6,
+                            "x": 13.2,
+                            "y": 34.702495201535505
+                        }
+                    }
+                ]
+            },
+            {
+                "model_version": "model 2",
+                "created_ago": "4 hours",
+                "result": [
+                    {
+                        "from_name": "tag",
+                        "id": "t5sp3TyXPo",
+                        "source": "$image",
+                        "to_name": "img",
+                        "type": "rectanglelabels",
+                        "value": {
+                            "height": 33.61228406909789,
+                            "rectanglelabels": [
+                                "Moonwalker"
+                            ],
+                            "rotation": 0,
+                            "width": 39.6,
+                            "x": 13.2,
+                            "y": 54.702495201535505
+                        }
+                    }
+                ]
+            }
+        ],
+        "id": 1,
+        "data": {
+            "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg"
+        }
+    },
+    {
+        "annotations": [],
+        "predictions": [],
+        "id": 2,
+        "data": {
+            "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg"
+        }
+    },
+    {
+        "annotations": [],
+        "predictions": [],
+        "id": 3,
+        "data": {
+            "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/soroush-karimi-crjPrExvShc-unsplash.jpg"
+        }
+    }
+]
+```
 
 More configurations can be found in the official [Label Studio examples](https://github.com/heartexlabs/label-studio-frontend/tree/master/examples)
 
+## Debugging
+
+If you use vs-code, then I have included my `.vscode` launch settings. Turn on remote debugging by setting the debug flag in the statement below, in `app.py`, to `True`. You can djust the `port` setings here too, and make sure you do the same in `launch.json`.
+
+```python
+streamlit_debug.set(flag=False, wait_for_client=True, host='localhost', port=6789)
+```
+
+A major benefit I found building a static HTML Streamlit component was that it can be debugged very easily using a browser's developer tools. This is in contrast to the obscure debugging experience you encounter using more sophisticated web frameworks.
+
+---
+
 Enjoy!
+
 Arvindra

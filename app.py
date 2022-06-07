@@ -17,7 +17,7 @@ set_page_container_style(
 # --------------------------------------------------------------------------------
 
 import streamlit_debug
-streamlit_debug.set(flag=True, wait_for_client=True, host='localhost', port=6789)
+streamlit_debug.set(flag=False, wait_for_client=True, host='localhost', port=6789)
 
 # -----------------------------------------------------------------------------
 

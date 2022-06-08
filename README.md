@@ -39,9 +39,9 @@ Run the included app for a quick example.
 $ streamlit run app.py
 ```
 
-The Streamlit user interface is used to load annotation task configurations which Label Studio uses to display annotation tools appropriate for the annotation task at hand. Once annotations are done, the annotations data can be submitted via LSF (actually via the custom LSF Streamlit component built to host LSF) to Streamlit, where it is displayed. You can of course extend the Streamlit application and save store this data as you see fit. Outside the scope of this Label Studio demo application, you can also leverage LSB API from Streamlit.
+The Streamlit user interface is used to load any supported annotation task configurations which Label Studio Frontend uses to display annotation tools appropriate for the annotation task at hand. Once annotations are done, the annotations data can be submitted via the custom LSF Streamlit component to Streamlit, where it is displayed. You can of course extend the Streamlit application and store or export this data as you see fit. You can leverage LSB API from Streamlit, though that is out of scope for this demo app.
 
-This app is easily customised through externalized configuration.  
+The demo app is easily customised through externalized configuration files.
 
 ## Configuration
 

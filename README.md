@@ -54,8 +54,6 @@ In `"task_configs"` you define `"task"` objects explicitly using the task `"obje
 
 Below are some examples:
 
----
-
 **./app_configs.json**
 
 ```json
@@ -134,8 +132,6 @@ Below are some examples:
 }
 ```
 
----
-
 **./label_studio_configs/xml/bounding_box_config.xml**
 
 ```xml
@@ -156,8 +152,6 @@ Below are some examples:
     </RectangleLabels>
 </View>
 ```
-
----
 
 **./label_studio_configs/json/example_tasks.json**
 
@@ -249,8 +243,17 @@ streamlit_debug.set(flag=False, wait_for_client=True, host='localhost', port=678
 
 A major benefit I found building a static HTML Streamlit component was that it can be debugged very easily using a browser's developer tools. This is in contrast to the obscure debugging experience you encounter using more sophisticated web frameworks.
 
+## Label Studio resources
+
+- [Website](https://labelstud.io/)
+- [Frontend docs](https://labelstud.io/guide/frontend.html)
+- [Frontend repo](https://github.com/heartexlabs/label-studio-frontend)
+- [Backend repo](https://github.com/heartexlabs/label-studio)
+
 ---
 
-Enjoy!
+If you enjoyed this app, please consider starring this repository.
+
+Thanks!
 
 Arvindra

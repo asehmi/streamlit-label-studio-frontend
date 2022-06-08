@@ -270,10 +270,25 @@ def main():
 
 # -----------------------------------------------------------------------------
 
+def about():
+    st.sidebar.markdown('---')
+    st.sidebar.info('(c) 2022. CloudOpti Ltd. All rights reserved.')
+    st.sidebar.image('./images/a12i_logo.png', width=120, output_format='png')
+
+def references():
+    st.sidebar.markdown('---')
+    st.sidebar.markdown('''
+        #### Label Studio resources
+        - [Website](https://labelstud.io/)
+        - [Frontend docs](https://labelstud.io/guide/frontend.html)
+        - [Frontend repo](https://github.com/heartexlabs/label-studio-frontend)
+        - [Backend repo](https://github.com/heartexlabs/label-studio)
+    ''')
+
+# -----------------------------------------------------------------------------
+
 if __name__ == '__main__':
     main()
-    st.sidebar.markdown('---')
-    _, c2, _ = st.sidebar.columns([1,5,1])
-    c2.image('./images/a12i_logo.png', output_format='png')
-    st.sidebar.info('(c) 2022. CloudOpti Ltd. All rights reserved.')
+    about()
+    references()
     sync_component_state_with_rerun()

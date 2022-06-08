@@ -23,6 +23,8 @@ and build the Streamlit component.
 
 ## Demo
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/asehmi/streamlit-label-studio-frontend/app.py)
+
 ![Demo](./images/streamlit-label-studio-frontend.gif)
 
 ## Installation

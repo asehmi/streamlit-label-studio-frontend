@@ -6,7 +6,7 @@ _**A Streamlit component integrating Label Studio Frontend in Streamlit applicat
     author:
         name: "Arvindra Sehmi"
         url: "https://www.linkedin.com/in/asehmi/"
-        mail: "vin@thesehmis.com"
+        mail: "vin [at] thesehmis.com"
         avatar: "https://twitter.com/asehmi/profile_image?size=original"
     related: [Introduction to Streamlit and Streamlit Components](https://auth0.com/blog/introduction-to-streamlit-and-streamlit-components/)
 
@@ -238,7 +238,7 @@ More configurations can be found in the official [Label Studio examples](https:/
 
 ## Debugging
 
-If you use vs-code, then I have included my `.vscode` launch settings. Turn on remote debugging by setting the debug flag in the statement below, in `app.py`, to `True`. You can djust the `port` setings here too, and make sure you do the same in `launch.json`.
+If you use vs-code, then I have included my `.vscode` launch settings. Turn on remote debugging in `app.py` by setting the debug flag in the statement below to `True`. You can adjust the `port` setings here too, but also remember to do the same in `launch.json`.
 
 ```python
 streamlit_debug.set(flag=False, wait_for_client=True, host='localhost', port=6789)

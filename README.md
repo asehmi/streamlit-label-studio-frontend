@@ -53,7 +53,7 @@ Below are some examples:
 
 ---
 
-**./app_config.json**
+**./app_configs.json**
 
 ```json
 { 

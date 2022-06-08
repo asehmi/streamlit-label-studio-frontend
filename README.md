@@ -33,7 +33,8 @@ $ pip install -r requirements.txt
 ```
 
 ## Usage
-Run the included app for a quick example. 
+
+Run the included app for a quick example of how the LSF Streamlit component I built works:
 
 ```bash
 $ streamlit run app.py

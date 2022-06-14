@@ -1,10 +1,14 @@
 { 
     "user" : {
-        "pk": 1,
+        "id": 1,
         "firstName": "Arvindra",
-        "lastName": "Sehmi"
+        "lastName": "Sehmi",
+        "username": "vin",
+        "email": "vin@cloudopti.com",
+        "avatar": null,
+        "initials": "AS"
     },
-
+  
     "interfaces": [
         "panel",
         "update",
@@ -15,6 +19,7 @@
         "topbar",
         "instruction",
         "side-column",
+        "ground-truth",
         "annotations:history",
         "annotations:tabs",
         "annotations:menu",
@@ -25,9 +30,10 @@
         "predictions:tabs",
         "predictions:menu",
         "auto-annotation",
-        "edit-history"
+        "edit-history",
+        "topbar:prevnext"
     ],
-    
+
     "task_configs": [
         {
             "name": "My Bounding Box Single",
@@ -63,10 +69,10 @@
             "description": "Bounding Box Image Annotation Example",
             "annotation_type": "image",
             "config": {
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/config.xml" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_bbox/config.xml" 
             },
             "task": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_bbox/tasks.json" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_bbox/tasks.json" 
             }
         },
         {
@@ -74,10 +80,10 @@
             "description": "Ellipse Image Annotation Example",
             "annotation_type": "image",
             "config": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_ellipses/config.xml" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_ellipses/config.xml" 
             },
             "task": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_ellipses/tasks.json" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_ellipses/tasks.json" 
             }
         },
         {
@@ -85,10 +91,10 @@
             "description": "Key Points Image Annotation Example",
             "annotation_type": "image",
             "config": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_keypoints/config.xml" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_keypoints/config.xml" 
             },
             "task": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_keypoints/tasks.json" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_keypoints/tasks.json" 
             }
         },
         {
@@ -96,21 +102,65 @@
             "description": "Multi Label Image Annotation Example",
             "annotation_type": "image",
             "config": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_multilabel/config.xml" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_multilabel/config.xml" 
             },
             "task": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_multilabel/tasks.json" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/v1.4.0/examples/image_multilabel/tasks.json" 
             }
         },
         {
-            "name": "Image Tools Example",
-            "description": "Image Tools Available Example",
-            "annotation_type": "image",
+            "name": "Rich Text HTML Example",
+            "description": "Rich Text HTML Annotation Example",
+            "annotation_type": "text",
             "config": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_tools/config.xml" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/rich_text_html/config.xml" 
             },
             "task": { 
-                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/image_tools/tasks.json" 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/rich_text_html/tasks.json" 
+            }
+        },
+        {
+            "name": "Rich Text Plain Example",
+            "description": "Rich Text Plain Annotation Example",
+            "annotation_type": "ner",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/rich_text_plain/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/rich_text_plain/tasks.json" 
+            }
+        },
+        {
+            "name": "Audio Classification Example",
+            "description": "Audio Classification Example",
+            "annotation_type": "audio_classification",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/audio_classification/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/audio_classification/tasks.json" 
+            }
+        },
+        {
+            "name": "Audio Regions Example",
+            "description": "Audio Regions Example",
+            "annotation_type": "audio_regions",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/audio_regions/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/audio_regions/tasks.json" 
+            }
+        },
+        {
+            "name": "Video Example",
+            "description": "Video Annotation Example",
+            "annotation_type": "video",
+            "config": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/video/config.xml" 
+            },
+            "task": { 
+                "url": "https://raw.githubusercontent.com/heartexlabs/label-studio-frontend/master/examples/video/tasks.json" 
             }
         }
     ]

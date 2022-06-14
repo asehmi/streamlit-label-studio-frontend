@@ -1,13 +1,14 @@
 <View>
     <View style="padding: 25px; box-shadow: 2px 2px 8px #AAA;">
-        <Image name="img" value="$image" width="100%" brightnessControl="true" contrastControl="true" zoomControl="true" rotateControl="true">
-        </Image>
-</View>
-    <RectangleLabels name="tag" toName="img">
+        <Image name="img" value="$image" width="100%" brightnessControl="true" contrastControl="true" zoomControl="true" rotateControl="true"></Image>
+    </View>
+    <RectangleLabels name="tag" toName="img" fillOpacity="0.5" strokeWidth="5">
         <Label value="Galaxy"></Label>
         <Label value="Star"></Label>
+        <Label value="Planet"></Label>
         <Label value="Comet"></Label>
         <Label value="Moon"></Label>
+        <Label value="Moonwalker" background="blue"></Label>
         <Label value="Sky"></Label>
         <Label value="Tree"></Label>
         <Label value="Road"></Label>

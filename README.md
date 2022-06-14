@@ -2,7 +2,7 @@
 
 _**A Streamlit component integrating Label Studio Frontend in Streamlit applications**_
 
-    date: "2022-06-07"
+    date: "2022-06-14"
     author:
         name: "Arvindra Sehmi"
         url: "https://www.linkedin.com/in/asehmi/"
@@ -21,11 +21,17 @@ This Streamlit application leverages Streamlit Components extensibilty with the 
 as a template it was straight-forward to take the code snippet in Label Studio's [Frontend integration guide](https://labelstud.io/guide/frontend.html#Frontend-integration-guide)
 and build the Streamlit component.
 
-## Demo
+### What's in the demo app
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/asehmi/streamlit-label-studio-frontend/app.py)
+![Infographic](./images/infographic.png)
+
+### Demo app
 
 ![Demo](./images/streamlit-label-studio-frontend.gif)
+
+### Try the demo app yourself
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/asehmi/streamlit-label-studio-frontend/app.py)
 
 ## Installation
 
@@ -249,6 +255,7 @@ A major benefit I found building a static HTML Streamlit component was that it c
 - [Frontend docs](https://labelstud.io/guide/frontend.html)
 - [Frontend repo](https://github.com/heartexlabs/label-studio-frontend)
 - [Backend repo](https://github.com/heartexlabs/label-studio)
+- [v1.4.0 on NPM](https://www.npmjs.com/package/@heartexlabs/label-studio)
 
 ---
 

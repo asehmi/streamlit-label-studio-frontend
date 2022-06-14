@@ -5,6 +5,11 @@ _component_func = components.declare_component(
 )
 
 # Public function for the package wrapping the caller to the frontend code
-def st_label_studio(config, interfaces, user, task, key='label_studio_frontend', height=1000):
-    component_value = _component_func(config=config, interfaces=interfaces, user=user, task=task, key=key, height=height)
+def st_label_studio(description, config, interfaces, user, task, key='label_studio_frontend', height=1000):
+    component_value = _component_func(
+        description=description, config=config, 
+        interfaces=interfaces, user=user,
+        task=task, height=height,
+        key=key
+    )
     return component_value

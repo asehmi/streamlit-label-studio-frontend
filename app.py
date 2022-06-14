@@ -21,6 +21,18 @@ streamlit_debug.set(flag=False, wait_for_client=True, host='localhost', port=678
 
 # -----------------------------------------------------------------------------
 
+empty_results_data = {
+    'value': {},
+    'rectanglelabels': [],
+    'ellipselabels': [],
+    'keypointlabels': [],
+    'audioregions': [],
+    'audioclasses': [],
+    'textentities': [],
+    'videoclasses': [],
+    'relations': [],
+}
+
 state = st.session_state
 if 'user' not in state:
     state.user = None
@@ -35,13 +47,7 @@ if 'task' not in state:
 if 'task_config_names' not in state:
     state.task_config_names = []
 if 'results_data' not in state:
-    state.results_data = {
-        'value': {},
-        'rectanglelabels': [],
-        'ellipselabels': [],
-        'keypointlabels': [],
-        'relations': [],
-    }
+    state.results_data = empty_results_data
 
 # -----------------------------------------------------------------------------
 
@@ -61,7 +67,8 @@ def sync_component_state_with_rerun():
 # -----------------------------------------------------------------------------
 
 def refresh_state(task_config_name=None):
-    user, interfaces, task_configs = get_app_config()
+    # uroll=True expands config task lists into multiple configs with one task each
+    user, interfaces, task_configs = get_app_config(unroll=True)
 
     # Default to the name of first config
     if task_config_name == None:
@@ -86,13 +93,7 @@ def refresh_state(task_config_name=None):
     task_config_names_with_dups = [tc['name'].split('@')[0].strip() for tc in task_configs]
     state.task_config_names = list(dict.fromkeys(task_config_names_with_dups).keys())
     
-    state.results_data = {
-        'value': {},
-        'rectanglelabels': [],
-        'ellipselabels': [],
-        'keypointlabels': [],
-        'relations': [],
-    }
+    state.results_data = empty_results_data
 
 # -----------------------------------------------------------------------------
 
@@ -114,50 +115,69 @@ def run_component(name, props):
         return None
 
 def handle_event(value):
-    if value == None:
+    if value == None or (not 'Annotation' in value['event']):
         return
 
     # TODO: generate tables for other types
-    rectanglelabels = []
-    ellipselabels = []
-    keypointlabels = []
-    relations = []
+    results_data = empty_results_data
+    results_data['value'] = value
     for v in value['data']:
-        if v['type'] == 'rectanglelabels':
-            rectanglelabels.append({
-                'id': v['id'],
-                'x': v['value']['x'], 'y': v['value']['y'], 
-                'width': v['value']['width'], 'height': v['value']['height'],
-                'rotation': v['value']['rotation'],
-                'label': v['value']['rectanglelabels'][0]
+        id = v['id']
+        val = v['value']
+        to_name = v['to_name']
+        v_type = v['type']
+        if to_name == 'img' and v_type == 'rectanglelabels':
+            results_data['rectanglelabels'].append({
+                'id': id,
+                'x': val['x'], 'y': val['y'], 
+                'width': val['width'], 'height': val['height'],
+                'rotation': val['rotation'],
+                'label': val['rectanglelabels'],
             })
-        if v['type'] == 'ellipselabels':
-            ellipselabels.append({
-                'id': v['id'],
-                'x': v['value']['x'], 'y': v['value']['y'], 
-                'radiusX': v['value']['radiusX'], 'radiusY': v['value']['radiusY'],
-                'rotation': v['value']['rotation'],
-                'label': v['value']['ellipselabels'][0]
+        if to_name == 'img' and v_type == 'ellipselabels':
+            results_data['ellipselabels'].append({
+                'id': id,
+                'x': val['x'], 'y': val['y'], 
+                'radiusX': val['radiusX'], 'radiusY': val['radiusY'],
+                'rotation': val['rotation'],
+                'label': val['ellipselabels'],
             })
-        if v['type'] == 'keypointlabels':
-            keypointlabels.append({
-                'id': v['id'],
-                'x': v['value']['x'], 'y': v['value']['y'], 
-                'width': v['value']['width'],
-                'label': v['value']['keypointlabels'][0]
+        if to_name == 'img' and v_type == 'keypointlabels':
+            results_data['keypointlabels'].append({
+                'id': id,
+                'x': val['x'], 'y': val['y'], 
+                'width': val['width'],
+                'label': val['keypointlabels'],
             })
-        if v['type'] == 'relation':
-            relations.append({
-                'from_id': v['from_id'], 'to_id': v['to_id'], 
-                'direction': v['direction']
+        if to_name == 'audio' and (v_type == 'labels' or v_type == 'number'):
+            results_data['audioregions'].append({
+                'id': id,
+                'start': val.get('start', None), 'end': val.get('end', None),
+                'labels': val.get('labels', None),
+                'number': val.get('number', None),
+            })
+        if to_name == 'audio' and v_type == 'choices':
+            results_data['audioclasses'].append({
+                'id': id, 'choices': val['choices'],
+            })
+        if to_name == 'video' and v_type == 'choices':
+            results_data['videoclasses'].append({
+                'id': id, 'choices': val['choices'],
+            })
+        if to_name == 'text' and v_type == 'labels':
+            results_data['textentities'].append({
+                'id': id,
+                'start': val['start'], 'end': val['end'],
+                'text': val['text'], 'labels': val['labels'],
+            })
+        if v_type == 'relation':
+            results_data['relations'].append({
+                'id': id,
+                'start': val['start'], 'end': val['end'],
             })
 
     # Store results data to be displayed later
-    state.results_data['value'] = value
-    state.results_data['rectanglelabels'] = rectanglelabels
-    state.results_data['ellipselabels'] = ellipselabels
-    state.results_data['keypointlabels'] = keypointlabels
-    state.results_data['relations'] = relations
+    state.results_data = results_data
 
     # print('Annotations', [v['value'] for v in value['data']])
 
@@ -178,20 +198,10 @@ def display_results_data():
         return
 
     st.markdown('#### Annotations tables')
-    if state.results_data['rectanglelabels']:
-        st.caption('Rectangle Labels')
-        st.dataframe(state.results_data['rectanglelabels'])
-    if state.results_data['ellipselabels']:
-        st.caption('Ellipse Labels')
-        st.dataframe(state.results_data['ellipselabels'])
-    if state.results_data['keypointlabels']:
-        st.caption('Keypoint Labels')
-        st.dataframe(state.results_data['keypointlabels'])
-    if state.results_data['relations']:
-        st.caption('Relations')
-        st.dataframe(state.results_data['relations'])
-
-    # TODO: display tables for other types
+    for k, v in state.results_data.items():
+        if k != 'value' and v:
+            st.caption(k)
+            st.dataframe(v)
 
     st.markdown('---')
 
@@ -240,18 +250,34 @@ def main():
     peer_task_config_names = [tc['name'] for tc in state.task_configs if task_config_name in tc['name']]
 
     if len(peer_task_config_names) > 1:
-        st.sidebar.info('Peer tasks available...')
-        task_config_name = st.sidebar.selectbox(
-            'Choose a peer task',
-            options=peer_task_config_names,
-            index=0, key='peer_task_config_name_selector',
-            on_change=_reconfigure_peer_task_state_cb,
-        )
+        c1, c2 = st.sidebar.columns([1,19])
+        c1.write('➕')
+        with c2:
+            task_config_name = st.selectbox(
+                'Choose a task',
+                options=peer_task_config_names,
+                index=0, key='peer_task_config_name_selector',
+                on_change=_reconfigure_peer_task_state_cb,
+                disabled=(len(peer_task_config_names) == 1),
+                help='This configuration has multiple tasks. Please choose one.'
+            )
 
+    show_annotation_data = st.sidebar.empty()
+    show_config_and_task_info = st.sidebar.empty()
+
+    st.sidebar.markdown('---')
     with st.sidebar.expander('⚙️ Settings', expanded=False):
-        height = st.slider('Adjust viewport height', min_value=500, max_value=2000, value=1200)
+        st.info('If the viewport area is blank, increase its height 📐 or click the button 🔁 below to force a reload.')
+        height = st.number_input(
+            '📐 Adjust viewport height',
+            min_value=500, max_value=2000, value=1300, step=100,
+        )
+        st.button('🔁 Label Studio reload')
+        if st.button('🔥 Clear config cache', help='Allows refresh of application task configuration.'):
+            get_app_config.clear()
 
     props = {
+        'description': task_config_name,
         'config': state.config,
         'interfaces': state.interfaces,
         'user': state.user,
@@ -262,10 +288,9 @@ def main():
     handle_event(run_component(task_config_name, props))
 
     st.markdown('---')
-
-    if st.sidebar.checkbox('Show annotation data', True):
+    if show_annotation_data.checkbox('Show annotation data', True):
         display_results_data()
-    if st.sidebar.checkbox('Show config and task info', False):
+    if show_config_and_task_info.checkbox('Show config and task info', False):
         display_config_and_task_info()
 
 # -----------------------------------------------------------------------------
@@ -283,6 +308,7 @@ def references():
         - [Frontend docs](https://labelstud.io/guide/frontend.html)
         - [Frontend repo](https://github.com/heartexlabs/label-studio-frontend)
         - [Backend repo](https://github.com/heartexlabs/label-studio)
+        - [v1.4.0 on NPM](https://www.npmjs.com/package/@heartexlabs/label-studio)
     ''')
 
 # -----------------------------------------------------------------------------
@@ -291,4 +317,4 @@ if __name__ == '__main__':
     main()
     about()
     references()
-    sync_component_state_with_rerun()
+    # sync_component_state_with_rerun()

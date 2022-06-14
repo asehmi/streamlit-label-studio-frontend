@@ -4,16 +4,23 @@ import json
 import streamlit as st
 
 # Loading the task configs from the `task_configs.json` file.
-st.experimental_memo()
-def get_app_config():
+# When uroll=True, configs with a list of tasks will be expanded into multiple
+# configs with one task each. (I have not been able to make LSF accept a
+# list of tasks, so I send each task individually.)
+# The config name will have the task id appended to it, <config name>@<task id>.
+# The function will provide task lists when unroll=False.
+@st.experimental_memo()
+def get_app_config(unroll=True):
+    print('get_app_config() - Cache Hit!')
+
     label_studio_app_config = json.loads(io.open('app_configs.json', 'r', encoding='utf8').read())
     
     user = label_studio_app_config['user']
     interfaces = label_studio_app_config['interfaces']
-    task_configs = label_studio_app_config['task_configs']
+    task_configs_source = label_studio_app_config['task_configs']
 
-    task_configs_inflated = []
-    for tc in task_configs:
+    task_configs = []
+    for i, tc in enumerate(task_configs_source):
         # Inflating the task configs.
 
         config_spec = tc['config']
@@ -34,22 +41,32 @@ def get_app_config():
         else:
             raise ValueError(f'Valid task spec not found in {tc}')
 
-        if isinstance(task, dict):
-            task = [task]
-
-        for i, task_item in enumerate(task):
-            id = task_item.get('id', i)
-            name = f"{tc['name']}@{id}"
-            tc_inflated = {
-                'id': i,
-                'name': name,
+        if unroll:
+            if isinstance(task, dict):
+                task = [task]
+            for j, task_item in enumerate(task):
+                id = task_item.get('id', j)
+                name = f"{tc['name']}@{id}"
+                tc_unrolled = {
+                    'id': j,
+                    'name': name,
+                    'description': tc['description'],
+                    'annotation_type': tc['annotation_type'],
+                    'config': config,
+                    'task': task_item,
+                }
+                task_configs.append(tc_unrolled)
+        else:
+            tc_untouched = {
+                'id': tc.get('id', i),
+                'name': tc['name'],
                 'description': tc['description'],
                 'annotation_type': tc['annotation_type'],
                 'config': config,
-                'task': task_item,
+                'task': task,
             }
-            task_configs_inflated.append(tc_inflated)
+            task_configs.append(tc_untouched)
 
-    # print('Task Configs Head:\n', task_configs[:2])
+    print('Task Configs Head:\n', task_configs[:5])
 
-    return user, interfaces, task_configs_inflated
+    return user, interfaces, task_configs

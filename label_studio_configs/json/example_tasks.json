@@ -51,7 +51,10 @@
         ],
         "id": 1,
         "data": {
-            "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg"
+            "image": [
+                "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg",
+                "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/soroush-karimi-crjPrExvShc-unsplash.jpg"
+            ]
         }
     },
     {
@@ -59,7 +62,10 @@
         "predictions": [],
         "id": 2,
         "data": {
-            "image": "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg"
+            "image": [
+                "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/history-in-hd-e5eDHbmHprg-unsplash.jpg",
+                "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/soroush-karimi-crjPrExvShc-unsplash.jpg"
+            ]
         }
     },
     {

@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 from frontend import st_label_studio
 from app_configs_builder import get_app_config
@@ -13,6 +14,27 @@ set_page_container_style(
     padding_top = 30, padding_right = 0, padding_left = 0, padding_bottom = 0,
     color = 'black', background_color = 'white',
 )
+
+@st.experimental_singleton
+def image_text_html(image, text, image_style=None, text_style=None):
+    with open(image, 'rb') as logo_f:
+        logo_b64 = base64.b64encode(logo_f.read()).decode('utf-8')
+
+    img_style = image_style if image_style else "height: 40px; margin: 3px;"
+    image_html = f'<img src="data:image/gif;base64,{logo_b64}" style="{img_style} vertical-align:middle;">'
+    
+    # style copied from dev tools
+    span_style = text_style if text_style else "font-weight: 600; font-size: 1.75rem;"
+    span_style = ( f'font-family: Source Sans Pro, sans-serif; {span_style}'
+                   'color: rgb(49, 51, 63); letter-spacing: -0.005em;'
+                   'padding: 0.5rem 0px 1rem; margin: 0px; line-height: 1.2;'
+                   'text-size-adjust: 100%; -webkit-font-smoothing: auto;'
+                   'position: relative; vertical-align:middle;' )
+    text_html = f'<span style="{span_style}">{text}</span>'
+
+    image_text_html = f'{image_html}&nbsp;&nbsp;{text_html}'
+
+    return image_text_html
 
 # --------------------------------------------------------------------------------
 
@@ -229,15 +251,21 @@ def _reconfigure_peer_task_state_cb():
     refresh_state(state['peer_task_config_name_selector'])
 
 def main():
-    st.image('./images/label_studio_demo.png', output_format='png')
     # st.subheader('Label Studio Demo')
+    # st.image('./images/label_studio_demo.png', output_format='png')
+    st.markdown(image_text_html(
+        './images/label_studio_logo.png', 'Label Studio Demo',
+        image_style="height: 30px; margin: 0px;",
+        text_style="font-weight: 600; font-size: 1.75rem;"
+    ), unsafe_allow_html=True )
+
     st.caption('A Streamlit component integrating Label Studio Frontend in Streamlit applications')
 
     # If any states are not assigned then initialize
     if not (state.user and state.interfaces and state.config and state.task):
         refresh_state()
 
-    st.sidebar.image('./images/label_studio_logo.png', width=50, output_format='png')
+    st.sidebar.image('./images/opossum.png', width=140, output_format='png')
     st.sidebar.subheader('Label Studio Tasks')
 
     task_config_name = st.sidebar.selectbox(
@@ -309,6 +337,7 @@ def references():
         - [Frontend repo](https://github.com/heartexlabs/label-studio-frontend)
         - [Backend repo](https://github.com/heartexlabs/label-studio)
         - [v1.4.0 on NPM](https://www.npmjs.com/package/@heartexlabs/label-studio)
+        - [Playground](https://labelstud.io/playground/)
     ''')
 
 # -----------------------------------------------------------------------------

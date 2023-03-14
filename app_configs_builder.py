@@ -1,7 +1,6 @@
 import io
 import requests
 import json
-import streamlit as st
 
 # Loading the task configs from the `task_configs.json` file.
 # When uroll=True, configs with a list of tasks will be expanded into multiple
@@ -9,7 +8,6 @@ import streamlit as st
 # list of tasks, so I send each task individually.)
 # The config name will have the task id appended to it, <config name>@<task id>.
 # The function will provide task lists when unroll=False.
-@st.experimental_memo()
 def get_app_config(unroll=True):
     print('get_app_config() - Cache Hit!')
 

@@ -1,5 +1,7 @@
 import base64
+
 import streamlit as st
+
 from frontend import st_label_studio
 from app_configs_builder import get_app_config
 
@@ -15,7 +17,13 @@ set_page_container_style(
     color = 'black', background_color = 'white',
 )
 
-@st.experimental_singleton
+# --------------------------------------------------------------------------------
+
+@st.cache_data
+def get_app_config_cached(unroll=True):
+    return get_app_config(unroll=unroll)
+
+@st.cache_data
 def image_text_html(image, text, image_style=None, text_style=None):
     with open(image, 'rb') as logo_f:
         logo_b64 = base64.b64encode(logo_f.read()).decode('utf-8')
@@ -90,7 +98,7 @@ def sync_component_state_with_rerun():
 
 def refresh_state(task_config_name=None):
     # uroll=True expands config task lists into multiple configs with one task each
-    user, interfaces, task_configs = get_app_config(unroll=True)
+    user, interfaces, task_configs = get_app_config_cached(unroll=True)
 
     # Default to the name of first config
     if task_config_name == None:
@@ -302,18 +310,21 @@ def main():
         )
         st.button('🔁 Label Studio reload')
         if st.button('🔥 Clear config cache', help='Allows refresh of application task configuration.'):
-            get_app_config.clear()
+            get_app_config_cached.clear()
+            st.experimental_rerun()
 
-    props = {
-        'description': task_config_name,
-        'config': state.config,
-        'interfaces': state.interfaces,
-        'user': state.user,
-        'task': state.task,
-        'height': height,
-    }
+    c1, _ = st.columns([1,1.1])
+    with c1:
+        props = {
+            'description': task_config_name,
+            'config': state.config,
+            'interfaces': state.interfaces,
+            'user': state.user,
+            'task': state.task,
+            'height': height,
+        }
 
-    handle_event(run_component(task_config_name, props))
+        handle_event(run_component(task_config_name, props))
 
     st.markdown('---')
     if show_annotation_data.checkbox('Show annotation data', True):
@@ -325,7 +336,7 @@ def main():
 
 def about():
     st.sidebar.markdown('---')
-    st.sidebar.info('(c) 2022. CloudOpti Ltd. All rights reserved.')
+    st.sidebar.info('(c) 2023. CloudOpti Ltd. All rights reserved.')
     st.sidebar.image('./images/a12i_logo.png', width=120, output_format='png')
 
 def references():

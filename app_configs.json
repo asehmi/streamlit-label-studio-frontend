@@ -34,7 +34,27 @@
         "topbar:prevnext"
     ],
 
+    
+
     "task_configs": [
+        {
+            "name": "My Bounding Box Single (Local Image)",
+            "description": "My Bounding Box Single Image Annotation (Local Image)",
+            "annotation_type": "image",
+            "config": { 
+                "file": "./label_studio_configs/xml/bounding_box_config.xml" 
+            },
+            "task": {
+                "object": {
+                    "annotations": [],
+                    "predictions": [],
+                    "id": 1,
+                    "data": {
+                        "image": "./images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg"
+                    }
+                }
+            }
+        },
         {
             "name": "My Bounding Box Single",
             "description": "My Bounding Box Single Image Annotation",

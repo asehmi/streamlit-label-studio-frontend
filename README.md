@@ -2,7 +2,7 @@
 
 _**A Streamlit component integrating Label Studio Frontend in Streamlit applications**_
 
-    date: "2022-06-14"
+    date: "2023-03-14"
     author:
         name: "Arvindra Sehmi"
         url: "https://www.linkedin.com/in/asehmi/"
@@ -238,6 +238,35 @@ Below are some examples:
 ```
 
 More configurations can be found in the official [Label Studio examples](https://github.com/heartexlabs/label-studio-frontend/tree/master/examples)
+
+## Local image annotations
+
+Because of the way Streamlit references the base directory of components, local images must be stored relative to the component's base. The Label Studio Frontend component base is `./frontend`, so images should be placed in `./frontend/images`, and referenced in tasks from the relative path `./images`. 
+
+For example:
+
+```json
+"task_configs": [
+    {
+        "name": "My Bounding Box Single (Local Image)",
+        "description": "My Bounding Box Single Image Annotation (Local Image)",
+        "annotation_type": "image",
+        "config": { 
+            "file": "./label_studio_configs/xml/bounding_box_config.xml" 
+        },
+        "task": {
+            "object": {
+                "annotations": [],
+                "predictions": [],
+                "id": 1,
+                "data": {
+                    "image": "./images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg"
+                }
+            }
+        }
+    }
+]
+```
 
 ## Debugging
 

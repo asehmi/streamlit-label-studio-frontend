@@ -21,6 +21,13 @@ This Streamlit application leverages Streamlit Components extensibilty with the 
 as a template it was straight-forward to take the code snippet in Label Studio's [Frontend integration guide](https://labelstud.io/guide/frontend.html#Frontend-integration-guide)
 and build the Streamlit component.
 
+### Try the Streamlit app yourself
+
+The application can be seen running in the Streamlit Cloud at the link below:
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://label-studio-frontend.streamlit.app/)
+
+
 ### What's in the demo app
 
 ![Infographic](./images/infographic.png)
